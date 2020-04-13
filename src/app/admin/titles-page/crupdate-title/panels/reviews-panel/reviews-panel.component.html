@@ -1,0 +1,38 @@
+<div matSort>
+    <data-table [dataSource]="dataSource" *ngIf="dataSource" itemsName="reviews">
+        <button mat-raised-button color="accent" (click)="openCrupdateReviewModal()" *ngIf="currentUser.hasPermission('reviews.create')" headerActions trans>Add</button>
+
+        <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedReviews()" headerSelectedActions *ngIf="currentUser.hasPermission('reviews.delete')">
+            <mat-icon svgIcon="delete"></mat-icon>
+        </button>
+
+        <ng-container matColumnDef="review">
+            <mat-header-cell *matHeaderCellDef trans>Review</mat-header-cell>
+            <mat-cell *matCellDef="let review"> {{review.body | slice:0:200}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+            <mat-header-cell *matHeaderCellDef mat-sort-header trans>Author</mat-header-cell>
+            <mat-cell *matCellDef="let review"> {{review.author ? review.author : '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="score">
+            <mat-header-cell *matHeaderCellDef mat-sort-header trans>Score</mat-header-cell>
+            <mat-cell *matCellDef="let review"> {{review.score ? review.score : '-' }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef mat-sort-header trans>type</mat-header-cell>
+            <mat-cell *matCellDef="let review"> {{review.type}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let review">
+                <button mat-icon-button (click)="openCrupdateReviewModal(review)" *ngIf="currentUser.hasPermission('reviews.update')">
+                    <mat-icon svgIcon="edit"></mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+    </data-table>
+</div>

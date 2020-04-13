@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h2 mat-dialog-title trans>
+        <span *ngIf="data.tag" trans>Update</span>
+        <span *ngIf="!data.tag" trans>Create</span>
+        <span> {{ 'Tag' | trans }}</span>
+    </h2>
+    <button type="button" (click)="close()" class="close-button no-style icon-button">
+        <mat-icon svgIcon="close"></mat-icon>
+    </button>
+</div>
+
+<form autocomplete="off" (ngSubmit)="confirm()" [formGroup]="tagForm" ngNativeValidate>
+    <mat-dialog-content class="many-inputs">
+        <div class="input-container">
+            <label for="name" trans>Name</label>
+            <input type="text" required maxlength="100" id="name" formControlName="name">
+        </div>
+
+        <div class="input-container">
+            <label for="display_name" trans>Display Name</label>
+            <input type="text" required maxlength="100" id="display_name" formControlName="display_name">
+            <p trans>Name easily readable and understandable by a human.</p>
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button (click)="close()" type="button" mat-button trans>Cancel</button>
+        <button type="submit" mat-raised-button color="accent" [disabled]="loading$ | async" trans>Save</button>
+    </mat-dialog-actions>
+</form>

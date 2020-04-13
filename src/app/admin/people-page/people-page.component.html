@@ -1,0 +1,47 @@
+<data-table [dataSource]="dataSource" itemsName="people" matSort>
+    <ng-container headerActions *ngIf="currentUser.hasPermission('people.create')">
+        <a mat-raised-button routerLink="/admin/people/new" color="accent" trans>Add</a>
+        <button mat-button (click)="openImportMediaModal()" trans>Import</button>
+    </ng-container>
+
+    <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedPeople()" headerSelectedActions *ngIf="currentUser.hasPermission('people.delete')">
+        <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Person</mat-header-cell>
+        <mat-cell *matCellDef="let person">
+            <media-image [src]="person.poster" size="small"></media-image>
+            <a [routerLink]="urls.mediaItem(person)">{{person.name}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="birth_date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Birth Date</mat-header-cell>
+        <mat-cell *matCellDef="let person"> {{person.birth_date ? (person.birth_date | formattedDate) : '-'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="local-views">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="views" trans>Local Views</mat-header-cell>
+        <mat-cell *matCellDef="let person"> {{person.views}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="popularity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Popularity</mat-header-cell>
+        <mat-cell *matCellDef="let person"> {{person.popularity}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="created_at">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Created At</mat-header-cell>
+        <mat-cell *matCellDef="let person"> {{person.created_at | formattedDate}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let person">
+            <a mat-icon-button [routerLink]="['/admin/people', person.id, 'edit']" *ngIf="currentUser.hasPermission('people.update')" [matTooltip]="'Edit person' | trans">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </a>
+        </mat-cell>
+    </ng-container>
+</data-table>

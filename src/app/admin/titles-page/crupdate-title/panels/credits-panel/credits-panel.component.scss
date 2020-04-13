@@ -1,0 +1,32 @@
+@import "../../../../../../scss/variables";
+
+credits-panel {
+  display: block;
+
+  .cdk-drag-handle {
+    cursor: move;
+    margin-right: 10px;
+  }
+
+  media-image {
+    margin-right: 15px;
+
+    img {
+      width: 35px;
+      height: 35px;
+      border-radius: 4px;
+    }
+  }
+
+  .cdk-drag-placeholder {
+    background-color: mat-color($app-background, hover);
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .cdk-drop-list-dragging .mat-row:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}

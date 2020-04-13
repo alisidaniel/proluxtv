@@ -1,0 +1,14 @@
+<header>
+    <h1 trans>Dashboard</h1>
+    <ul class="analytics-nav">
+        <li class="analytics-nav-item" *ngFor="let navItem of settings.get('vebto.admin.analytics.channels')">
+            <a mat-button routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[navItem.route]" trans>{{navItem.name}}</a>
+        </li>
+    </ul>
+</header>
+
+<analytics-header [data]="headerData"></analytics-header>
+
+<router-outlet (activate)="onChannelChange()"></router-outlet>
+
+<loading-indicator class="overlay" [isVisible]="analytics.loading$ | async"></loading-indicator>

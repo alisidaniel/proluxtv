@@ -1,0 +1,24 @@
+<media-item-header></media-item-header>
+
+<ad-host slot="ads.shared" class="shared-ad-host"></ad-host>
+
+<div class="container main-container">
+    <h1 class="page-title" trans>Popular People</h1>
+    <sort-dropdown [sortOptions]="sortOptions" [formControl]="sortFormControl"></sort-dropdown>
+    <ng-container *ngIf="people$ | async as people">
+        <div *ngFor="let person of people.data" class="person">
+            <media-image [src]="person.poster" [alt]="person.name" [link]="urls.mediaItem(person)" size="medium"></media-image>
+            <div class="meta">
+                <div class="name">
+                    <a [routerLink]="urls.mediaItem(person)">{{person.name}}</a>
+                </div>
+                <known-for-widget [person]="person"></known-for-widget>
+                <p class="description">{{person.description}}</p>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<loading-indicator [isVisible]="loading$ | async" class="overlay"></loading-indicator>
+
+<footer></footer>

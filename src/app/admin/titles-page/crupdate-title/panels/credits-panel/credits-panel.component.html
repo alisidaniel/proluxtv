@@ -1,0 +1,62 @@
+<div class="table-header">
+    <div class="button-container">
+        <button type="button" mat-raised-button color="accent" (click)="openCrupdateCreditModal()" trans>Add Credit</button>
+    </div>
+
+    <div class="input-container">
+        <input type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search..." trans-placeholder>
+        <mat-icon svgIcon="search"></mat-icon>
+    </div>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort cdkDropList (cdkDropListDropped)="changeCreditsOrder($event)">
+    <ng-container matColumnDef="person">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Person</mat-header-cell>
+        <mat-cell *matCellDef="let person">
+            <button type="button" mat-icon-button cdkDragHandle *ngIf="type === 'cast'">
+                <mat-icon svgIcon="drag-handle"></mat-icon>
+            </button>
+            <media-image [src]="person.poster" size="small"></media-image>
+            <span>{{person.name}}</span>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="character" *ngIf="type === 'cast'">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Character</mat-header-cell>
+        <mat-cell *matCellDef="let person"> {{person.pivot.character}} </mat-cell>
+    </ng-container>
+
+    <ng-container *ngIf="type === 'crew'">
+        <ng-container matColumnDef="department">
+            <mat-header-cell *matHeaderCellDef mat-sort-header trans>Department</mat-header-cell>
+            <mat-cell *matCellDef="let person"> {{person.pivot.department}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="job">
+            <mat-header-cell *matHeaderCellDef mat-sort-header trans>Job</mat-header-cell>
+            <mat-cell *matCellDef="let person"> {{person.pivot.job}} </mat-cell>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let person">
+            <button type="button" mat-icon-button (click)="openCrupdateCreditModal(person)">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </button>
+            <button type="button" mat-icon-button (click)="detachCredit(person)">
+                <mat-icon svgIcon="close"></mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="type === 'cast' ? castColumns : crewColumns"></mat-header-row>
+    <mat-row cdkDrag *matRowDef="let myRowData; columns: type === 'cast' ? castColumns : crewColumns">
+        <span *cdkDragPreview></span>
+    </mat-row>
+</mat-table>
+
+<no-results-message *ngIf="!dataSource.data.length">
+    <span primary-text trans>Nothing to Display.</span>
+    <span secondary-text trans>There are no credits attached yet.</span>
+</no-results-message>

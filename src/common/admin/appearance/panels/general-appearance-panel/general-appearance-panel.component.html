@@ -1,0 +1,25 @@
+<appearance-panel-meta [path]="['General']" (back)="editor.closeActivePanel()"></appearance-panel-meta>
+
+<div [formGroup]="form" class="appearance-panel-content many-inputs">
+    <appearance-image-input [defaultValue]="defaultValue('branding.logo_light')" formControlName="branding.logo_light" type="branding" highlightInPreview=".logo" trans>
+        Logo #1 (On dark background)
+    </appearance-image-input>
+
+    <appearance-image-input [defaultValue]="defaultValue('branding.logo_dark')" formControlName="branding.logo_dark" type="branding" highlightInPreview=".logo" trans>
+        Logo #2 (On light background)
+    </appearance-image-input>
+
+    <appearance-image-input [defaultValue]="defaultValue('branding.favicon')" backendUri="uploads/favicon" type="branding" formControlName="branding.favicon" trans>
+        Favicon
+    </appearance-image-input>
+
+    <div class="input-container">
+        <label for="env.app_name" trans>Site Name</label>
+        <input type="text" id="env.app_name" [placeholder]="defaultValue('env.app_name')" formControlName="env.app_name">
+    </div>
+
+    <div class="input-container">
+        <label for="branding.site_description" trans>Site Description</label>
+        <textarea id="branding.site_description" [placeholder]="defaultValue('branding.site_description')" rows="4" formControlName="branding.site_description"></textarea>
+    </div>
+</div>

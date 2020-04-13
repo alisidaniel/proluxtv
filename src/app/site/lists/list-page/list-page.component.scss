@@ -1,0 +1,129 @@
+@import "../../../../scss/variables";
+
+list-page {
+  display: block;
+  width: 100%;
+
+  .main-container {
+    margin-bottom: 25px;
+    min-height: calc(100vh - #{$material-navbar-height + $footer-height});
+  }
+
+  .list-header {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 20px;
+
+    .state {
+      .mat-icon {
+        vertical-align: bottom;
+        margin-right: 5px;
+      }
+    }
+
+    .left {
+      flex: 1 1 auto;
+      margin-right: auto;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .name {
+      text-transform: capitalize;
+      margin: 0;
+    }
+
+    .mat-button {
+      .text {
+        display: block;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .list-actions {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid mat-color($app-foreground, divider);
+
+    .meta {
+      flex: 1 1 auto;
+      align-self: flex-end;
+      max-width: 60%;
+    }
+
+    .description {
+      margin-bottom: 5px;
+      max-width: 700px;
+    }
+
+    .count {
+      font-size: 1.7rem;
+    }
+
+    .sort-container {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .mat-icon-button {
+        margin-top: 24px;
+
+        &.active {
+          color: mat-color($app-accent, default);
+        }
+      }
+
+      .input-container {
+        width: auto;
+      }
+
+      label {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      select {
+        width: 200px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .mat-table {
+    background-color: inherit;
+  }
+
+  @media only screen and (max-width: $medium) {
+    .meta {
+      display: none;
+    }
+
+    // align buttons with sort select. on mobile select label
+    // will be on top so flex align items will not work properly.
+    .sort-container {
+      .mat-icon-button {
+        margin-top: 25px;
+      }
+    }
+  }
+
+  .shared-ad-host {
+    margin-top: 30px;
+  }
+}
+
+.list-share-menu {
+  .mat-menu-item .mat-icon.facebook-icon {
+    color: $facebook-color;
+  }
+
+  .mat-menu-item .mat-icon.twitter-icon {
+    color: $twitter-color;
+  }
+}

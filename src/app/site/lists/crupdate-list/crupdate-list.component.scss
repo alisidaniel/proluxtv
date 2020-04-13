@@ -1,0 +1,105 @@
+@import "../../../../scss/variables";
+
+crupdate-list {
+  display: block;
+  background-color: mat-color($app-background, background);
+
+  .container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .form-group {
+    padding: 20px;
+    border: $admin-card-border;
+    box-shadow: $admin-card-box-shadow;
+    border-radius: 4px;
+    background-color: mat-color($app-background, card);
+    margin-bottom: 30px;
+
+    search-input {
+      margin-bottom: 15px;
+
+      input {
+        border: 1px solid mat-color($app-foreground, divider);
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .list-details-group {
+    position: relative;
+  }
+
+  .mat-progress-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  no-results-message {
+    margin: 35px 0;
+  }
+
+  .mat-column-item {
+    media-image {
+      width: 45px;
+      margin: 5px 10px 5px 0;
+      border-radius: 4px;
+    }
+
+    .info {
+      text-transform: capitalize;
+    }
+
+    .name, .type {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .mat-column-edit {
+    color: mat-color($app-warn);
+    max-width: 50px;
+    margin-left: auto;
+  }
+
+  .mat-column-rating, .mat-column-added_at {
+    max-width: 200px;
+  }
+
+  .cdk-drag-handle {
+    margin-right: 20px;
+  }
+
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .mat-table.cdk-drop-list-dragging .mat-row:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  @media only screen and (max-width: $medium) {
+    .mat-header-row {
+      display: none;
+    }
+
+    .mat-column-added_at, .mat-column-rating, .cdk-drag-handle {
+      display: none;
+    }
+
+    .name {
+      max-width: 170px;
+    }
+
+    .mat-cell:first-of-type, .mat-cell:last-of-type {
+      padding: 0;
+    }
+  }
+}

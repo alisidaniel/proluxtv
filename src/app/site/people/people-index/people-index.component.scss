@@ -1,0 +1,82 @@
+@import "../../../../scss/variables";
+
+people-index {
+  display: block;
+
+  .main-container {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    min-height: calc(100vh - #{$material-navbar-height + $footer-height});
+  }
+
+  .page-title {
+    padding: 0 10px;
+    margin: 0 0 5px;
+  }
+
+  sort-dropdown {
+    padding-left: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid mat-color($app-foreground, divider-lighter); //
+  }
+
+  .person {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 900px;
+
+    &:nth-child(even) {
+      background-color: mat-color($app-background, background);
+    }
+
+    .meta {
+      padding: 0 20px;
+    }
+
+    .name {
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    a {
+      color: mat-color($app-accent, default);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    media-image {
+      width: 140px;
+      height: 210px;
+      flex: 0 0 140px;
+
+      img {
+        @include mat-elevation(1);
+        border-radius: 4px;
+        height: 100%;
+      }
+    }
+  }
+
+  .shared-ad-host {
+    margin-top: 30px;
+  }
+
+  @media only screen and (max-width: $medium) {
+    .description {
+      display: none;
+    }
+
+    .person media-image {
+      width: 50px;
+      height: 75px;
+      flex: 0 0 50px;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+@import "variables";
+
+custom-page {
+  display: block;
+  min-height: 100vh;
+  flex: 1 1 auto;
+
+  .page-body {
+    padding: 25px;
+    word-break: break-all;
+  }
+
+  // TODO: refactor this so there's no need to duplicate these styles
+  .article-body {
+    p {
+      word-break: break-word;
+    }
+
+    .widget {
+      background-color: #f3fbf7;
+      max-width: 100%;
+      padding: 14px;
+      margin: 35px 0;
+      border-radius: 3px;
+      overflow-wrap: break-word;
+      border-left: 5px solid darken(#f3fbf7, 40%);
+      font-size: 1.7rem;
+
+      .title {
+        font-weight: 500;
+        color: #43484d;
+      }
+
+      &.widget-important {
+        background-color: #fef7ed;
+        border-left: 5px solid darken(#fef7ed, 40%);
+      }
+
+      &.widget-warning {
+        background-color: #f2564d;
+        border-left: 5px solid darken(#f2564d, 40%);
+      }
+    }
+  }
+}

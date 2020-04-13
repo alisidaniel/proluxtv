@@ -1,0 +1,31 @@
+<media-item-header [backdrop]="backdropImage$ | async"></media-item-header>
+
+<div class="container main-container">
+    <ng-container *ngIf="title$ | async as title">
+        <title-primary-details-panel [item]="title"></title-primary-details-panel>
+
+        <div class="credits-container">
+            <mat-expansion-panel class="mat-elevation-z0" *ngFor="let creditGroup of groupedCredits$ | async | keyvalue">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <span class="credit-group-name" trans>{{creditGroup.key}}</span>
+                        <span>&nbsp;({{creditGroup.value.length}}&nbsp;</span>
+                        <span trans>credits</span>)
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="credits">
+                    <ng-container *ngFor="let credit of creditGroup.value; index as index; last as isLast; trackBy: trackByFn">
+                        <div class="credit">
+                            <a class="name" [routerLink]="urls.mediaItem(credit)">{{credit.name}}</a>
+                            <span class="separator"> ... </span>
+                            <span class="job">{{credit.pivot.character || (credit.pivot.job | trans)}}</span>
+                        </div>
+                    </ng-container>
+                </div>
+            </mat-expansion-panel>
+        </div>
+    </ng-container>
+</div>
+
+<footer></footer>

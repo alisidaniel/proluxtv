@@ -1,0 +1,41 @@
+<div class="table-header">
+    <div class="button-container">
+        <button mat-raised-button color="accent" (click)="openCrupdateCreditModal()">
+            {{ 'Add' | trans }} {{ (displayType || type ) | trans }}
+        </button>
+    </div>
+
+    <div class="input-container">
+        <input type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search..." trans-placeholder>
+        <mat-icon svgIcon="search"></mat-icon>
+    </div>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Name</mat-header-cell>
+        <mat-cell *matCellDef="let tag"> {{tag.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="display_name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Display Name</mat-header-cell>
+        <mat-cell *matCellDef="let tag"> {{tag.display_name || '-'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let tag">
+            <button mat-icon-button (click)="detachTag(tag)">
+                <mat-icon svgIcon="close"></mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name', 'display_name', 'edit']"></mat-header-row>
+    <mat-row cdkDrag *matRowDef="let myRowData; columns: ['name', 'display_name', 'edit']"></mat-row>
+</mat-table>
+
+<no-results-message *ngIf="!dataSource.data?.length">
+    <span primary-text trans>Nothing to Display.</span>
+    <span secondary-text trans>Attach new {{ displayType || type }} from above.</span>
+</no-results-message>

@@ -1,0 +1,50 @@
+<div class="table-header">
+    <div class="button-container">
+        <button mat-raised-button color="accent" (click)="openCrupdateEpisodeModal()" trans>Add Episode</button>
+    </div>
+
+    <div class="input-container">
+        <input type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search..." trans-placeholder>
+        <mat-icon svgIcon="search"></mat-icon>
+    </div>
+</div>
+
+<mat-table [dataSource]="dataSource" [trackBy]="trackByFn">
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef trans>Name</mat-header-cell>
+        <mat-cell *matCellDef="let episode">
+            <media-image [src]="episode.poster" [alt]="episode.name" size="small"></media-image>
+            <span>{{episode.name}}</span>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="number">
+        <mat-header-cell *matHeaderCellDef trans>Number</mat-header-cell>
+        <mat-cell *matCellDef="let episode"> {{episode.episode_number}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="release-date">
+        <mat-header-cell *matHeaderCellDef trans>Release Date</mat-header-cell>
+        <mat-cell *matCellDef="let episode"> {{episode.release_date | formattedDate}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let episode">
+            <button type="button" mat-icon-button (click)="openCrupdateEpisodeModal(episode)">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </button>
+            <button type="button" mat-icon-button (click)="deleteEpisode(episode)">
+                <mat-icon svgIcon="close"></mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name', 'number', 'release-date', 'edit']"></mat-header-row>
+    <mat-row *matRowDef="let myRowData; columns: ['name', 'number', 'release-date', 'edit']"></mat-row>
+</mat-table>
+
+<no-results-message *ngIf="!dataSource.data.length">
+    <span primary-text trans>Nothing to Display.</span>
+    <span secondary-text trans>This season does not have any episodes yet.</span>
+</no-results-message>

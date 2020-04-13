@@ -1,0 +1,86 @@
+<media-item-header></media-item-header>
+
+<form [formGroup]="form" (ngSubmit)="createOrUpdateList()" class="container" ngNativeFormValidate>
+   <div class="many-inputs form-group list-details-group">
+       <div class="input-container">
+           <label for="name" trans>Name</label>
+           <input type="text" id="name" formControlName="name" required>
+       </div>
+
+       <div class="input-container">
+           <label for="public" trans>Public</label>
+           <select id="public" formControlName="public" required>
+               <option [ngValue]="true" trans>Yes</option>
+               <option [ngValue]="false" trans>No</option>
+           </select>
+       </div>
+
+       <div class="input-container">
+           <label for="description" trans>Description</label>
+           <textarea type="text" id="description" formControlName="description"></textarea>
+       </div>
+
+       <div class="input-container" *ngIf="currentUser.isAdmin()">
+           <label for="auto_update" trans>Auto Update With</label>
+           <select type="text" id="auto_update" formControlName="auto_update">
+               <option [ngValue]="null" trans>Don't auto update</option>
+               <option [value]="option.key" *ngFor="let option of autoUpdateOptions | keyvalue" trans>{{option.value}}</option>
+           </select>
+           <p *ngIf="(form.get('auto_update').valueChanges | async)" trans>This will override any list items that were attached manually.</p>
+       </div>
+
+       <button type="submit" mat-raised-button color="accent" [disabled]="loading$ | async" trans>Save</button>
+       <button type="button" mat-button (click)="maybeDeleteList()" *ngIf="(updating$ | async) && !(system$ | async)" [disabled]="loading$ | async" trans>Delete</button>
+       <mat-progress-bar mode="indeterminate" color="accent" *ngIf="loading$ | async"></mat-progress-bar>
+   </div>
+
+    <div class="form-group">
+        <search-input (resultSelected)="attachItem($event)"></search-input>
+
+        <no-results-message *ngIf="!(items$ | async)?.length">
+            <span primary-text trans>List is Empty</span>
+            <span secondary-text trans>No items are attached to this list yet.</span>
+        </no-results-message>
+
+        <mat-table [dataSource]="items$ | async" matSort cdkDropList (cdkDropListDropped)="reorderList($event)">
+            <ng-container matColumnDef="item">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="name" trans>Item</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <button mat-icon-button cdkDragHandle>
+                        <mat-icon svgIcon="drag-handle"></mat-icon>
+                    </button>
+                    <media-image [src]="item.poster" [alt]="item.name" size="small"></media-image>
+                    <div class="info">
+                        <div class="name">{{item.name}}</div>
+                        <div class="type">{{ item?.year }} | {{ item?.type }}</div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="rating">
+                <mat-header-cell *matHeaderCellDef mat-sort-header trans>Rating</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <rating-widget [item]="item" [showRateButton]="false"></rating-widget>
+                    <span *ngIf="!item.rating">-</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="added_at">
+                <mat-header-cell *matHeaderCellDef mat-sort-header trans>Added</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{item.pivot ? (item.pivot.created_at | formattedDate) : '&mdash;'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <button type="button" mat-icon-button (click)="detachItem(item)">
+                        <mat-icon svgIcon="close"></mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['item', 'rating', 'added_at', 'edit']"></mat-header-row>
+            <mat-row cdkDrag *matRowDef="let myRowData; columns: ['item', 'rating', 'added_at', 'edit']"></mat-row>
+        </mat-table>
+    </div>
+</form>

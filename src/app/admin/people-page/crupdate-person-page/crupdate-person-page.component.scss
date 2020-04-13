@@ -1,0 +1,110 @@
+@import "../../../../scss/variables";
+
+crupdate-person-page {
+  display: block;
+  width: 100%;
+  padding: 25px;
+
+  .inline-container {
+    display: flex;
+
+    .input-container {
+      flex: 1 1 auto;
+
+      &:not(:last-of-type) {
+        margin-right: 15px;
+      }
+
+      &.size-small {
+        flex: 1 1 30%;
+      }
+    }
+  }
+
+  .mat-tab-group {
+    margin-bottom: 25px;
+  }
+
+  .mat-tab-body-wrapper {
+    padding: 20px 0;
+  }
+
+  .mat-tab-label-content {
+    text-transform: capitalize;
+  }
+
+  .primary-facts-panel {
+    display: flex;
+
+    .left-col {
+      flex: 0 0 200px;
+      width: 200px;
+      margin-right: 25px;
+    }
+
+    .right-col {
+      flex: 1 1 auto;
+    }
+
+    media-image {
+      img {
+        max-width: 100%;
+        @include mat-elevation(1);
+        border-radius: 4px;
+      }
+    }
+
+    .submit-button {
+      width: 100%;
+      margin-top: 15px;
+      min-height: 45px;
+    }
+  }
+
+  .credits-table {
+    padding: 0 10px;
+  }
+
+  .mat-column-credit {
+    media-image {
+      margin-right: 10px;
+
+      img {
+        width: 30px;
+        height: 40px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .mat-column-edit {
+    color: mat-color($app-foreground, icon);
+    max-width: 100px;
+  }
+
+  .mat-column-department, .mat-column-job {
+    text-transform: capitalize;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 1px 15px;
+
+    .input-container {
+      max-width: 400px;
+      position: relative;
+
+      .mat-icon {
+        position: absolute;
+        top: 11px;
+        right: 8px;
+      }
+    }
+  }
+
+  no-results-message {
+    margin: 50px 0 40px;
+  }
+}

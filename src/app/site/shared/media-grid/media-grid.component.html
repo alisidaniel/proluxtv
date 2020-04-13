@@ -1,0 +1,12 @@
+<figure class="item" *ngFor="let item of items; trackBy: trackByFn" [title]="item.name">
+    <media-image [src]="item.poster" size="medium" [alt]="item.name + ' image'" [link]="urls.mediaItem(item)">
+        <button mat-mini-fab (click)="playVideo(item)" class="play-button-animation" *ngIf="showPlayButton && item.type === 'title' && item?.videos?.length">
+            <mat-icon svgIcon="play-arrow"></mat-icon>
+        </button>
+    </media-image>
+    <figcaption>
+        <a class="title" [routerLink]="urls.mediaItem(item)">{{item.name}}</a>
+        <genre-widget [genres]="item.genres" [limit]="3" *ngIf="!isPerson(item)"></genre-widget>
+    </figcaption>
+    <streamable-label [item]="item"></streamable-label>
+</figure>

@@ -1,0 +1,37 @@
+<div class="action-bar">
+    <button mat-raised-button color="accent" (authClick)="openCrupdateReviewModal()" trans>Write a Review</button>
+</div>
+
+<ng-container *ngIf="reviews$ | async as reviews">
+    <div class="reviews-list" *ngIf="reviews && reviews.length; else noReviews">
+        <div class="review" *ngFor="let review of reviews">
+            <div class="header">
+                <div class="score" [ngClass]="getScoreColor(review.score)">{{review.score}}</div>
+                <div class="meta">
+                    <div class="author">
+                        {{review.author || review.user?.display_name}}
+                    </div>
+                    <div class="date">{{review.created_at | formattedDate}}</div>
+                </div>
+                <div class="actions">
+                    <button mat-icon-button color="danger" (click)="maybeDeleteReview(review)" *ngIf="currentUser.get('id') === review.user_id">
+                        <mat-icon svgIcon="delete"></mat-icon>
+                    </button>
+                    <a [href]="review.link" target="_blank" mat-icon-button *ngIf="review.link">
+                        <mat-icon svgIcon="open-in-new"></mat-icon>
+                    </a>
+                </div>
+            </div>
+            <div class="body" moreLessText="500" [textContent]="review.body"></div>
+        </div>
+    </div>
+
+    <ng-template #noReviews>
+        <no-results-message>
+            <span primary-text trans>Nothing to Display.</span>
+            <span secondary-text trans>Be the first to review this title.</span>
+        </no-results-message>
+    </ng-template>
+</ng-container>
+
+<loading-indicator [isVisible]="loading$ | async" class="overlay overlay-light"></loading-indicator>

@@ -1,0 +1,21 @@
+@import "../../../../../scss/variables";
+
+episode-page {
+  display: block;
+  width: 100%;
+
+  title-secondary-details-panel {
+    margin-bottom: 35px;
+    padding-bottom: 35px;
+    border-bottom: 1px solid mat-color($app-foreground, divider-lighter);
+  }
+
+  title-videos {
+    margin-bottom: 80px;
+  }
+
+  .shared-ad-host {
+    margin-top: 50px;
+    margin-bottom: 40px;
+  }
+}

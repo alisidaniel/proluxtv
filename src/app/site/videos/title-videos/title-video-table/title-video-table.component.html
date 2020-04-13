@@ -1,0 +1,58 @@
+<ng-container *ngIf="videos$ | async as videos">
+    <mat-table [dataSource]="videos" *ngIf="videos.length">
+        <ng-container matColumnDef="favicon">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let video">
+                <img class="domain-favicon" [src]="getFavicon(video.url)" alt="Video domain favicon">
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef trans>Name</mat-header-cell>
+            <mat-cell *matCellDef="let video" (click)="playVideo(video)">
+                <mat-icon svgIcon="play-arrow" class="play-icon"></mat-icon>
+                <div class="video-name">{{video.name}}</div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="language">
+            <mat-header-cell *matHeaderCellDef trans>Language</mat-header-cell>
+            <mat-cell *matCellDef="let video">{{video.language}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="quality">
+            <mat-header-cell *matHeaderCellDef trans>Quality</mat-header-cell>
+            <mat-cell *matCellDef="let video">
+                <div [ngSwitch]="video.quality">
+                    <mat-icon svgIcon="hd" *ngSwitchCase="'hd'"></mat-icon>
+                    <mat-icon svgIcon="4k" *ngSwitchCase="'4k'"></mat-icon>
+                    <div *ngSwitchDefault>-</div>
+                </div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="report">
+            <mat-header-cell *matHeaderCellDef trans>Report</mat-header-cell>
+            <mat-cell *matCellDef="let video">
+                <button mat-icon-button class="report-button" [disabled]="loading$ | async" (click)="reportVideo(video)">
+                    <mat-icon svgIcon="report"></mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="created_at">
+            <mat-header-cell *matHeaderCellDef trans>Added At</mat-header-cell>
+            <mat-cell *matCellDef="let video">{{video.created_at | formattedDate}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="rating">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let video">
+                <video-rating-widget [video]="video"></video-rating-widget>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let video">
+                <edit-title-video-widget [video]="video"></edit-title-video-widget>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['favicon', 'name', 'language', 'quality', 'report', 'created_at', 'rating', 'edit']"></mat-header-row>
+        <mat-row *matRowDef="let video; columns: ['favicon', 'name', 'language', 'quality', 'report', 'created_at', 'rating', 'edit']"></mat-row>
+    </mat-table>
+</ng-container>

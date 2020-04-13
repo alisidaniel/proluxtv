@@ -1,0 +1,34 @@
+<data-table [dataSource]="dataSource" itemsName="articles" matSort>
+    <a mat-raised-button routerLink="/admin/news/create" color="accent" *ngIf="currentUser.hasPermission('news.create')" headerActions trans>Add</a>
+
+    <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedArticles()" headerSelectedActions *ngIf="currentUser.hasPermission('news.delete')">
+        <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+
+    <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Title</mat-header-cell>
+        <mat-cell *matCellDef="let article">
+            <img [src]="article?.meta?.image">
+            <a [routerLink]="urls.mediaItem(article)">{{article.title}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="source">
+        <mat-header-cell *matHeaderCellDef trans>Source</mat-header-cell>
+        <mat-cell *matCellDef="let article">{{article?.meta?.source ? article.meta.source : '-'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="created_at">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Created</mat-header-cell>
+        <mat-cell *matCellDef="let article">{{article.created_at | formattedDate}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let article">
+            <a mat-icon-button [routerLink]="['/admin/news', article.id, 'edit']" *ngIf="currentUser.hasPermission('news.update')" [matTooltip]="'Edit article' | trans">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </a>
+        </mat-cell>
+    </ng-container>
+</data-table>

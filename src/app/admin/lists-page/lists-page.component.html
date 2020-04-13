@@ -1,0 +1,43 @@
+<data-table [dataSource]="dataSource" itemsName="lists" matSort>
+    <ng-container headerActions>
+        <a mat-raised-button routerLink="/lists/new" color="accent" *ngIf="currentUser.hasPermission('lists.create')" trans>Add</a>
+    </ng-container>
+
+    <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedLists()" headerSelectedActions *ngIf="currentUser.hasPermission('lists.delete')">
+        <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Name</mat-header-cell>
+        <mat-cell *matCellDef="let list">{{list.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="owner">
+        <mat-header-cell *matHeaderCellDef trans>Owner</mat-header-cell>
+        <mat-cell *matCellDef="let list"> {{ list.user ? list.user.display_name : '-' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="items-count">
+        <mat-header-cell *matHeaderCellDef trans>Items Count</mat-header-cell>
+        <mat-cell *matCellDef="let list"> {{ list.items_count }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="public">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Public</mat-header-cell>
+        <mat-cell *matCellDef="let list"> {{list.public ? 'Yes' : 'No'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="updated_at">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Updated At</mat-header-cell>
+        <mat-cell *matCellDef="let list"> {{list.updated_at | formattedDate}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let list">
+            <a mat-icon-button [routerLink]="['/lists', list.id, 'edit']" *ngIf="currentUser.hasPermission('lists.update')" [matTooltip]="'Edit list' | trans">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </a>
+        </mat-cell>
+    </ng-container>
+</data-table>

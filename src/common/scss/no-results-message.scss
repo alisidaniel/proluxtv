@@ -1,0 +1,57 @@
+@import "variables";
+
+.no-results-message {
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column wrap;
+  font-weight: 300;
+
+  &.horizontal {
+    flex-flow: row-reverse nowrap;
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      margin-top: 0;
+      margin-right: 15px;
+    }
+
+    .main {
+      font-size: 1.4rem;
+      text-align: left;
+      margin-bottom: 0;
+    }
+
+    .secondary {
+      font-size: 1.4rem;
+    }
+  }
+
+  .text {
+    opacity: 0.75;
+  }
+
+  .icon {
+    width: 150px;
+    height: 150px;
+    fill: currentColor;
+    margin-top: 25px;
+  }
+
+  .main {
+    font-size: 2.6rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .secondary {
+    font-size: 1.7rem;
+    font-weight: 400;
+    text-align: center;
+    max-width: 450px;
+  }
+}

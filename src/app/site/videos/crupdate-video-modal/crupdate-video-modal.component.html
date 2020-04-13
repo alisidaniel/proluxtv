@@ -1,0 +1,95 @@
+<div class="modal-header">
+    <h2 mat-dialog-title trans>
+        <span *ngIf="data.video" trans>Update</span>
+        <span *ngIf="!data.video" trans>Create</span>
+        <span> {{ 'Video' | trans }}</span>
+    </h2>
+    <button type="button" (click)="close()" class="close-button no-style icon-button">
+        <mat-icon svgIcon="close"></mat-icon>
+    </button>
+</div>
+
+<form autocomplete="off" (ngSubmit)="confirm()" [formGroup]="videoForm" ngNativeValidate>
+    <mat-dialog-content class="many-inputs">
+        <div class="input-container">
+            <label for="name" trans>Name</label>
+            <input type="text" required minlength="3" maxlength="100" id="name" formControlName="name">
+        </div>
+
+        <div class="input-container">
+            <label for="thumbnail" trans>Thumbnail</label>
+            <div class="input-with-action action-left">
+                <button type="button" mat-flat-button color="accent" (click)="uploadFile('image')" [matTooltip]="'Upload thumbnail' | trans">
+                    <mat-icon svgIcon="file-upload"></mat-icon>
+                </button>
+                <input type="text" formControlName="thumbnail" id="thumbnail" minlength="1" maxlength="250">
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="url" trans>Url</label>
+            <div class="input-with-action action-left">
+                <button type="button" mat-flat-button color="accent" (click)="uploadFile('video')" [matTooltip]="'Upload video' | trans">
+                    <mat-icon svgIcon="file-upload"></mat-icon>
+                </button>
+                <input type="url" required maxlength="250" id="url" formControlName="url">
+            </div>
+            <upload-progress-bar></upload-progress-bar>
+        </div>
+
+        <div class="input-container">
+            <label for="quality" trans>Quality</label>
+            <select required maxlength="250" id="quality" formControlName="quality">
+                <option [ngValue]="null" trans>None</option>
+                <option value="regular" trans>Regular</option>
+                <option value="hd">HD</option>
+                <option value="4k">4K</option>
+            </select>
+        </div>
+
+        <div class="input-container">
+            <label for="language" trans>Language</label>
+            <select required id="language" formControlName="language">
+                <option [ngValue]="null" trans>None</option>
+                <option [value]="language.code" *ngFor="let language of languages$ | async">{{language.name}}</option>
+            </select>
+        </div>
+
+        <div class="input-container">
+            <label for="type" trans>Type</label>
+            <select required id="type" formControlName="type">
+                <option value="embed" trans>Embed</option>
+                <option value="video" trans>Direct Video</option>
+                <option value="external" trans>Remote Link</option>
+            </select>
+        </div>
+
+        <select-title-input formControlName="title" [hideTitleSelect]="data.hideTitleSelect" *ngIf="!data.episode"></select-title-input>
+
+        <ng-container *ngIf="settings.get('streaming.show_category_select') || insideAdmin()">
+            <div class="input-container">
+                <label for="category" trans>Category</label>
+                <select required id="category" formControlName="category">
+                    <option value="trailer" trans>Trailer</option>
+                    <option value="clip" trans>Clip</option>
+                    <option value="featurette" trans>Featurette</option>
+                    <option value="teaser" trans>Teaser</option>
+                    <option value="full" trans>Full Movie or Episode</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <div class="input-container" *ngIf="insideAdmin()">
+            <label for="order" trans>Position</label>
+            <input type="number" id="order" formControlName="order" min="0" max="999">
+            <p>At what position should this video be displayed on title and episode pages. Lower position will appear first. Lowest position video for title/episode will be used as primary video for streaming or as trailer.</p>
+        </div>
+
+        <captions-panel [video]="data.video" *ngIf="settings.get('streaming.show_captions_panel') || insideAdmin()"></captions-panel>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button (click)="close()" type="button" mat-button trans>Cancel</button>
+        <button type="submit" mat-raised-button color="accent" [disabled]="loading$ | async" trans>Save</button>
+    </mat-dialog-actions>
+</form>

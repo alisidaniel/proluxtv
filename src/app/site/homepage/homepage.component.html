@@ -1,0 +1,23 @@
+<slider>
+    <media-item-header [transparent]="true"></media-item-header>
+</slider>
+
+<ad-host slot="ads.shared" class="shared-ad-host"></ad-host>
+
+<section class="lists">
+    <ng-container *ngFor="let list of content$ | async; index as index">
+        <div class="list">
+            <div class="container">
+                <h2>
+                    <a [routerLink]="['/lists', list.id]">{{list.name}}</a>
+                </h2>
+                <p *ngIf="list.description">{{list.description}}</p>
+                <media-grid [items]="list.items" class="full-width" [showPlayButton]="settings.get('homepage.show_play_buttons')"></media-grid>
+            </div>
+        </div>
+
+        <ad-host slot="ads.homepage" *ngIf="index === 0" class="homepage-ad-host"></ad-host>
+    </ng-container>
+</section>
+
+<footer></footer>

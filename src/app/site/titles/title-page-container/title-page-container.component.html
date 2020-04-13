@@ -1,0 +1,40 @@
+<media-item-header [backdrop]="backdropImage$ | async"></media-item-header>
+
+<ad-host slot="ads.shared" class="shared-ad-host"></ad-host>
+
+<ng-container *ngIf="title$ | async as title">
+    <div class="container">
+        <title-primary-details-panel [item]="title"></title-primary-details-panel>
+        <current-next-episode-panel *ngIf="title.is_series"></current-next-episode-panel>
+        <title-secondary-details-panel [item]="title"></title-secondary-details-panel>
+
+        <title-videos *ngIf="title.show_videos || settings.get('titles.video_panel_mode')"></title-videos>
+
+        <mat-tab-group color="accent" animationDuration="0ms">
+            <mat-tab [label]="'Cast' | trans">
+                <title-cast-panel></title-cast-panel>
+            </mat-tab>
+            <mat-tab [label]="'Reviews' | trans" *ngIf="settings.get('titles.enable_reviews')">
+                <ng-template matTabContent>
+                    <review-tab></review-tab>
+                </ng-template>
+            </mat-tab>
+            <mat-tab [label]="'Images' | trans" *ngIf="title.images?.length">
+                <ng-template matTabContent>
+                    <div class="images-container">
+                        <media-image [src]="image.url" [alt]="title.name" mode="landscape" size="large" *ngFor="let image of title.images" (click)="openImageGallery(title.images, image)"></media-image>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+
+        <ad-host slot="ads.title" class="title-ad-host"></ad-host>
+    </div>
+
+    <div class="tagline" *ngIf="title?.tagline">
+        <q class="container">{{title.tagline}}</q>
+    </div>
+</ng-container>
+
+<related-titles-panel></related-titles-panel>
+<footer></footer>

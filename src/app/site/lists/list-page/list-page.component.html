@@ -1,0 +1,93 @@
+<media-item-header></media-item-header>
+
+<ad-host slot="ads.shared" class="shared-ad-host"></ad-host>
+
+<div class="container main-container">
+    <ng-container *ngIf="list$ | async as list">
+        <div class="list-header">
+            <div class="left">
+                <h1 class="name">{{list.system ? (list.name | trans) : list.name}}</h1>
+                <div class="state">
+                    <ng-container *ngIf="(public$ | async); else private">
+                        <mat-icon svgIcon="lock-open"></mat-icon>
+                        <span trans>Public</span>
+                    </ng-container>
+                    <ng-template #private>
+                        <mat-icon svgIcon="lock"></mat-icon>
+                        <span trans>Private</span>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="right">
+                <button mat-button [routerLink]="['/lists', list.id, 'edit']" [disabled]="!canEdit()">
+                    <mat-icon svgIcon="edit"></mat-icon>
+                    <span class="text" trans>Edit</span>
+                </button>
+
+                <button mat-button [matMenuTriggerFor]="shareMenu" [disabled]="!(public$ | async)">
+                    <mat-icon svgIcon="share"></mat-icon>
+                    <span class="text" trans>Share</span>
+                </button>
+
+                <mat-menu #shareMenu="matMenu" class="list-share-menu">
+                    <button mat-menu-item (click)="shareListSocially('facebook')">
+                        <mat-icon svgIcon="facebook" class="facebook-icon"></mat-icon>
+                        <span>Facebook</span>
+                    </button>
+                    <button mat-menu-item (click)="shareListSocially('twitter')">
+                        <mat-icon svgIcon="twitter" class="twitter-icon"></mat-icon>
+                        <span>Twitter</span>
+                    </button>
+                    <button mat-menu-item (click)="shareListSocially('mail')">
+                        <mat-icon svgIcon="mail"></mat-icon>
+                        <span trans>Mail</span>
+                    </button>
+                    <button mat-menu-item (click)="shareListSocially('copy')">
+                        <mat-icon svgIcon="link"></mat-icon>
+                        <span trans>Copy Link</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+
+        <div class="list-actions">
+            <div class="meta">
+                <div class="description">{{list.description}}</div>
+                <div class="count">
+                    <span trans>Showing</span>
+                    <span> {{ currentCount$ | async }} </span>
+                    <span trans>of</span>
+                    <span> {{ totalCount$ | async }} </span>
+                    <span trans>items</span>
+                </div>
+            </div>
+            <form class="sort-container" [formGroup]="listForm">
+                <div class="input-container">
+                    <label for="sort" trans>Sort by</label>
+                    <select name="sort" id="sort" formControlName="sortBy">
+                        <option [value]="option.key" *ngFor="let option of sortOptions | keyvalue" trans>{{option.value}}</option>
+                    </select>
+                </div>
+                <button mat-icon-button (click)="setSortDir('desc')" [class.active]="sortIsActive('desc')">
+                    <mat-icon svgIcon="arrow-downward"></mat-icon>
+                </button>
+                <button mat-icon-button (click)="setSortDir('asc')" [class.active]="sortIsActive('asc')">
+                    <mat-icon svgIcon="arrow-upward"></mat-icon>
+                </button>
+            </form>
+        </div>
+
+        <div class="items">
+            <media-grid [items]="items$ | async" class="full-width"></media-grid>
+
+            <no-results-message *ngIf="!(items$ | async)?.length">
+                <span primary-text trans>List is Empty</span>
+                <span secondary-text trans>This list does not have any items yet.</span>
+            </no-results-message>
+        </div>
+    </ng-container>
+
+    <loading-indicator [isVisible]="loading$ | async" class="overlay"></loading-indicator>
+</div>
+
+<footer></footer>

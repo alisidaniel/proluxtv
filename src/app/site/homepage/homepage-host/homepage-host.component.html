@@ -1,0 +1,4 @@
+<landing *ngIf="(settings.get('billing.force_subscription') && !currentUser.isLoggedIn()) else homepage"></landing>
+<ng-template #homepage>
+    <homepage></homepage>
+</ng-template>

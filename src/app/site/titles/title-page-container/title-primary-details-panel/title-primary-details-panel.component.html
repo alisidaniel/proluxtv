@@ -1,0 +1,96 @@
+<ng-container *ngIf="title$ | async as title">
+    <div class="row">
+        <div class="left">
+            <h1 class="title">
+                <ng-container *ngIf="isEpisode(); else titleLink">
+                    <a [routerLink]="urls.mediaItem(title)">{{ (title).name }}:</a>
+                    <a [routerLink]="urls.episode(title, item.season_number, item.episode_number)"> {{item.name}}</a>&nbsp;<span *ngIf="item.year" class="year">({{item.year}})</span>
+                </ng-container>
+                <ng-template #titleLink>
+                    <a [routerLink]="urls.mediaItem(item, title)"> {{item.name}}</a>&nbsp;<span *ngIf="item.year" class="year">({{item.year}})</span>
+                </ng-template>
+            </h1>
+        </div>
+        <div class="right links">
+            <div class="social-icons">
+                <button type="button" mat-icon-button (click)="shareUsing('facebook')" class="social-icon facebook">
+                    <mat-icon svgIcon="facebook"></mat-icon>
+                </button>
+                <button type="button" mat-icon-button (click)="shareUsing('twitter')" class="social-icon twitter">
+                    <mat-icon svgIcon="twitter"></mat-icon>
+                </button>
+                <button type="button" mat-icon-button (click)="shareUsing('mail')" class="social-icon mail">
+                    <mat-icon svgIcon="mail"></mat-icon>
+                </button>
+                <button type="button" mat-icon-button (click)="shareUsing('copy')" class="social-icon link">
+                    <mat-icon svgIcon="link"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="left">
+            <div class="genres" *ngIf="!isEpisode()">
+                <genre-widget [genres]="item.genres"></genre-widget>
+            </div>
+
+            <div class="episode-number" *ngIf="isEpisode()">
+                <a [routerLink]="urls.season(title, item.season_number)">
+                    <span trans>Season</span>:
+                    <span> {{item.season_number}}</span>
+                </a>
+                <span>, </span>
+                <a [routerLink]="urls.episode(title, item.season_number, item.episode_number)">
+                    <span trans>Episode</span>:
+                    <span> {{item.episode_number}}&nbsp;</span>
+                </a>
+            </div>
+
+            <div class="row rating-row">
+                <rating-widget [item]="item" [showRateButton]="isReleased()"></rating-widget>
+            </div>
+        </div>
+        <div class="right meta-details">
+            <ng-container *ngIf="title.runtime">
+                <div class="detail">
+                    <div class="name" trans>Running Time</div>
+                    <div class="value">
+                        {{title.runtime}}
+                        <span trans>mins</span>
+                    </div>
+                </div>
+
+                <mat-icon svgIcon="keyboard-arrow-right" class="separator"></mat-icon>
+            </ng-container>
+
+            <ng-container *ngIf="!isEpisode()">
+                <ng-container *ngIf="item.budget">
+                    <div class="detail">
+                        <div class="name" trans>Budget</div>
+                        <div class="value">{{item.budget | currency:'USD':'symbol':'1.0-0'}}</div>
+                    </div>
+
+                    <mat-icon svgIcon="keyboard-arrow-right" class="separator"></mat-icon>
+                </ng-container>
+
+                <ng-container *ngIf="item.episode_count">
+                    <div class="detail">
+                        <div class="name" trans>Episodes</div>
+                        <div class="value">{{item.episode_count}}</div>
+                    </div>
+
+                    <mat-icon svgIcon="keyboard-arrow-right" class="separator"></mat-icon>
+                </ng-container>
+            </ng-container>
+
+            <div class="detail">
+                <div class="name" *ngIf="isEpisode()" trans>Air Date</div>
+                <div class="name" *ngIf="isSeries()" trans>Premiered</div>
+                <div class="name" *ngIf="isMovie()" trans>Release Date</div>
+                <div class="value">{{item.release_date | formattedDate }}</div>
+            </div>
+        </div>
+    </div>
+
+</ng-container>

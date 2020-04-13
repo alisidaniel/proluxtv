@@ -1,0 +1,84 @@
+<data-table [dataSource]="dataSource" itemsName="videos" matSort>
+    <ng-container headerActions *ngIf="currentUser.hasPermission('videos.create')">
+        <button mat-raised-button (click)="openCrupdateVideoModal()" color="accent" trans>Add</button>
+    </ng-container>
+
+    <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedPeople()" headerSelectedActions *ngIf="currentUser.hasPermission('videos.delete')">
+        <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Video</mat-header-cell>
+        <mat-cell *matCellDef="let video">
+            <img [src]="video.thumbnail || video.title?.backdrop" alt="Video thumbnail">
+            <a class="video-name" [href]="video.url" target="_blank">{{video.name}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="title" *ngIf="!title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="title_id" trans>Title</mat-header-cell>
+        <mat-cell *matCellDef="let video">
+            <a [routerLink]="['/admin/titles', video.title.id, 'edit']" [queryParams]="{active: 'video'}" *ngIf="video.title">{{video.title.name}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans class="small-column">Type</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column"> {{video.type}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans class="small-column">Category</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column"> {{video.category}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="approved">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="small-column" trans>Approved</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">
+            <button mat-icon-button (click)="toggleApprovedState(video)" class="approve-button" [class.disapproved]="!video.approved"  [class.approved]="video.approved" [disabled]="modifying$ | async">
+                <mat-icon svgIcon="check" class="success-icon"></mat-icon>
+                <mat-icon svgIcon="close" class="warn-icon"></mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quality">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans class="small-column">Quality</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">
+            <ng-container [ngSwitch]="video.quality">
+                <mat-icon svgIcon="hd" *ngSwitchCase="'hd'"></mat-icon>
+                <mat-icon svgIcon="4k" *ngSwitchCase="'4k'"></mat-icon>
+                <span *ngSwitchDefault>-</span>
+            </ng-container>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="score">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="score" trans class="small-column">Score</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">{{video.score ? video.score + '%' : '-'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reports">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="reports_count" trans class="small-column">Reports</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">{{video.reports_count ? video.reports_count : '-'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="season">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="season" trans class="small-column">Season</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">{{video.season ? video.season : '-'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="episode">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="episode" trans class="small-column">Episode</mat-header-cell>
+        <mat-cell *matCellDef="let video" class="small-column">{{video.episode ? video.episode : '-'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let video">
+            <button mat-icon-button (click)="openCrupdateVideoModal(video)" *ngIf="currentUser.hasPermission('videos.update')" [matTooltip]="'Edit video' | trans">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+</data-table>

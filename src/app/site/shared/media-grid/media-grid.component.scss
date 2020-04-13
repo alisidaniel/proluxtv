@@ -1,0 +1,112 @@
+@import "../../../../scss/variables";
+
+media-grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(1, 1fr);
+  overflow: hidden;
+
+  &.full-width {
+    @media only screen and (min-width: $xsmall) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media only screen and (min-width: $medium) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media only screen and (min-width: $large) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media only screen and (min-width: $xlarge) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  &.partial-width {
+    @media only screen and (min-width: $xsmall) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media only screen and (min-width: $medium) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media only screen and (min-width: $large) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &.small-titles {
+    .item figcaption .title {
+      font-size: 1.5rem;
+    }
+  }
+
+  .item {
+    margin: 0;
+    text-align: center;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+
+    &:hover media-image img {
+      @include mat-elevation(6);
+    }
+
+    media-image img {
+      height: calc(100% - 37px); // figcaption height + margin
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease-in-out;
+      @include mat-elevation(1);
+    }
+
+    .mat-fab, .mat-mini-fab {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    figcaption {
+      height: 25px;
+      margin: 8px 0 4px;
+
+      &:hover {
+        color: mat-color($app-accent, default);
+      }
+
+      rating-widget {
+        margin-top: 15px;
+      }
+
+      a {
+        display: block;
+        color: inherit;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+        font-size: 1.8rem;
+        margin: auto;
+      }
+    }
+  }
+
+  // reduce title size and hide genres on mobile
+  @media only screen and (max-width: $medium) {
+    .item figcaption .title {
+      font-size: 1.5rem;
+    }
+
+    genre-widget {
+      display: none;
+    }
+  }
+}

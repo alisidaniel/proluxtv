@@ -1,0 +1,25 @@
+reviews-panel {
+  display: block;
+
+  &.material-panel {
+    padding: 0;
+  }
+
+  .admin-table-panel {
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .mat-column-type {
+    text-transform: capitalize;
+  }
+
+  .mat-column-type, .mat-column-author, .mat-column-score {
+    max-width: 120px;
+  }
+
+  .mat-column-review {
+    margin-right: 30px;
+    word-break: break-word;
+  }
+}

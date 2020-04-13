@@ -1,0 +1,54 @@
+<data-table [dataSource]="dataSource" itemsName="titles" matSort>
+    <ng-container headerActions *ngIf="currentUser.hasPermission('titles.create')">
+        <a mat-raised-button routerLink="/admin/titles/new" color="accent" trans>Add</a>
+        <button mat-button (click)="openImportMediaModal()" trans>Import</button>
+    </ng-container>
+
+    <button mat-icon-button [matTooltip]="'Delete selected' | trans" (click)="maybeDeleteSelectedTitles()" headerSelectedActions *ngIf="currentUser.hasPermission('titles.delete')">
+        <mat-icon svgIcon="delete"></mat-icon>
+    </button>
+
+    <ng-container matColumnDef="poster">
+        <mat-header-cell *matHeaderCellDef trans>Poster</mat-header-cell>
+        <mat-cell *matCellDef="let title"> <media-image [src]="title.poster" size="small"></media-image> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="is_series" trans>Type</mat-header-cell>
+        <mat-cell *matCellDef="let title" trans> {{title.is_series ? 'Series' : 'Movie'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Name</mat-header-cell>
+        <mat-cell *matCellDef="let title"> <a [routerLink]="urls.mediaItem(title)">{{title.name}}</a> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="release-date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="release_date" trans>Release Date</mat-header-cell>
+        <mat-cell *matCellDef="let title"> {{title.release_date | formattedDate}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rating">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="tmdb_vote_average" trans>Rating</mat-header-cell>
+        <mat-cell *matCellDef="let title"> {{title.rating ? title.rating + '/10' : '-'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="local-views">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="views" trans>Local Views</mat-header-cell>
+        <mat-cell *matCellDef="let title"> {{title.views}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="popularity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header trans>Popularity</mat-header-cell>
+        <mat-cell *matCellDef="let title"> {{title.popularity}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let title">
+            <a mat-icon-button [routerLink]="['/admin/titles', title.id, 'edit']" *ngIf="currentUser.hasPermission('titles.update')" [matTooltip]="'Edit title' | trans">
+                <mat-icon svgIcon="edit"></mat-icon>
+            </a>
+        </mat-cell>
+    </ng-container>
+</data-table>
